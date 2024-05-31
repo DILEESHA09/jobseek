@@ -1,6 +1,6 @@
 from django.db import models
 
-class Canidate_register(models.Model):
+class Candidate_register(models.Model):
     email = models.CharField(max_length=100)
     password = models.CharField(max_length=100)  
     ftname = models.CharField(max_length=100,null=True)

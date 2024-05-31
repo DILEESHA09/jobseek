@@ -5,7 +5,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 
-const Canidate_login = () => {
+const Candidate_login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -27,20 +27,22 @@ const Canidate_login = () => {
 
     try {
       // Make an HTTP POST request to the server
-      const response = await axios.post('http://127.0.0.1:8000/canidate/login/', formData, {
+      const response = await axios.post('http://127.0.0.1:8000/candidate/login/', formData, {
         headers: {
           'Content-Type': 'application/json'
         }
       });
-
+        console.log("response login",response)
       // Check if the request was successful
       if (response.status === 200) {
         console.log(response);
-        if(response.session_id){
-          localStorage.setItem('session_id',session_id)
+        if(response.data.session_id){
+          localStorage.setItem('session_id',response.data.session_id)
+          localStorage.setItem('candidate_id',response.data.candidate_id)
+          window.location.href = '/applyjob'; // Redirect to the dashboard page
         }
         // Handle successful login (e.g., redirect the user)
-        window.location.href = '/applyjob'; // Redirect to the dashboard page
+        
       } else {
         // Handle errors (e.g., display error message to the user)
         console.error('Login failed:', response.data.error);
@@ -55,7 +57,7 @@ const Canidate_login = () => {
 
   return (
     <div style={{ border: '1px solid #ced4da', borderRadius: '5px', padding: '20px', width: "400px", margin: "200px auto" }}>
-      <h2 className="mt-5">CANIDATE LOGIN</h2>
+      <h2 className="mt-5">CANDIDATE LOGIN</h2>
       <Form className="mt-4" onSubmit={handleSubmit}>
         <Form.Group controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
@@ -69,10 +71,10 @@ const Canidate_login = () => {
           Submit
         </Button>
         <hr />
-        <Link to='/canidate_register'>Create Account</Link> 
+        <Link to='/candidate_register'>Create Account</Link> 
       </Form>
     </div>
   );
 };
 
-export default Canidate_login;
+export default Candidate_login;

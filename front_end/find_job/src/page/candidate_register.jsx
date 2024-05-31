@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link, useNavigate } from 'react-router-dom';
 
 
-function Canidate_register() {
+function Candidate_register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
@@ -15,7 +15,7 @@ function Canidate_register() {
 
   
     try {
-      const response = await axios.post('http://127.0.0.1:8000/canidate/register/', {
+      const response = await axios.post('http://127.0.0.1:8000/candidate/register/', {
         email: email,
         password: password
       });
@@ -25,7 +25,7 @@ function Canidate_register() {
   
       if (response.status === 200) {
         setMessage('Registration successful!');
-        navigate('/canidate_login')
+        navigate('/candidate_login')
       } else {
         setMessage('Registration failed.');
       }
@@ -41,7 +41,7 @@ function Canidate_register() {
   <div style={{ border: '1px solid #ced4da', borderRadius: '5px', padding: '20px',width:"400px",margin:"200px auto"}}>
 
     <div className="container">
-    <h2> Canidate Register</h2>
+    <h2> Candidate Register</h2>
     <form onSubmit={handleSubmit}>
       <div className="mb-3">
         <label htmlFor="email" className="form-label">Email:</label>
@@ -67,7 +67,7 @@ function Canidate_register() {
       </div>
       <button type="submit" className="btn btn-primary">Register</button>
       <hr />
-      <Link to={'/canidate_login'}>I Have Already Account</Link>
+      <Link to={'/candidate_login'}>I Have Already Account</Link>
     </form>
     {message && <p>{message}</p>}
   </div>
@@ -76,4 +76,4 @@ function Canidate_register() {
   );
 }
 
-export default Canidate_register;
+export default Candidate_register;

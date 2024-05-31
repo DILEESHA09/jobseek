@@ -39,6 +39,7 @@ const Login = () => {
         console.log(response);
         if(response.session_id){
           localStorage.setItem('session_id',session_id)
+          
         }
       
         // Handle successful login (e.g., redirect the user)

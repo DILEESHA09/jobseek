@@ -9,6 +9,7 @@ class Canidate_register(models.Model):
     cv = models.FileField(upload_to='cv_uploads/%Y/%m/%d/',null=True) 
     experience = models.IntegerField(null=True)
     phone =models.BigIntegerField(default = 0,null=True)
+    apply_status = models.CharField(max_length = 20, default = 'pending')
     
 
 

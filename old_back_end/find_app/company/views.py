@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from customer.models import Canidate_register 
+from customer.models import Candidate_register 
 from.models import Company_register,JobOpening
 from rest_framework.response import Response
 from rest_framework.views import APIView 
@@ -129,7 +129,7 @@ class jobapplicationApi(APIView):
         return Response ({'result':'job application failed'})
     def get(self, request):
         # Retrieve all JobOpening objects from the database
-        job_application = Canidate_register.objects.all()
+        job_application = Candidate_register.objects.all()
         # Serialize the queryset of JobOpening objects
         serializer = myprofile_serializer(job_application, many=True)
         # Return the serialized data as a response

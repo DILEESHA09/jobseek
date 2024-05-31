@@ -48,7 +48,7 @@ const Openjob = ({fetch}) => {
         description: description,
         requirement: requirement,
         education_qualification: education_qualification,
-        company :1,
+        company :company.id,
         location: location 
       });
   

@@ -7,9 +7,9 @@ import { useNavigate } from 'react-router-dom';
 const Jobcard = ({ job , fetch}) => {
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate()
-  const handleapplicant =()=>{
-    navigate('/viewJobApplications')
-  }
+  const viewApplicants = (jobId) => {
+    navigate(`/appliedCandidates/${jobId}`);
+  };
   const [formData, setFormData] = useState({
     title: job?.title || '',
     location: job?.location || '',
@@ -75,7 +75,8 @@ const Jobcard = ({ job , fetch}) => {
             <Card.Subtitle className="mb-2 text-muted">{job.location}</Card.Subtitle>
             <Card.Text>{job.description}</Card.Text>
             <div className="d-flex justify-content-end">
-             <Button variant="primary" className="mr-2" onClick={handleapplicant}>View applicants</Button>
+            
+             <Button variant="primary" className="mr-2" onClick={() => viewApplicants(job.id)}>View applicants</Button>
               <Button variant="primary" className="mr-2" onClick={handleEditClick}>Edit</Button>
               <Button variant="danger" onClick={handleDeleteClick}>Delete</Button>
             </div>

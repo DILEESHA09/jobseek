@@ -16,10 +16,12 @@ const Myprofile = () => {
     experience: 0,
     phone: '',
   });
+  const id=localStorage.getItem('candidate_id')
   const fetchData = async () => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/canidate/register/?id=${initialData.id}`);
-      const data = response.data[0]; // Assuming response.data is an array
+      const response = await axios.get(`http://127.0.0.1:8000/candidateProfile/${id}`);
+      const data = response.data; // Assuming response.data is an array
+      console.log(data)
       setInitialData(data);
       setFormData({
         email: data.email,
@@ -73,7 +75,7 @@ const Myprofile = () => {
       formDataToSend.append('experience',5);
       formDataToSend.append('phone', formData.phone);
 
-      const response = await axios.patch(`http://127.0.0.1:8000/canidate/register/?id=${initialData.id}`, formDataToSend, {
+      const response = await axios.patch(`http://127.0.0.1:8000/candidate/register/?id=${initialData.id}`, formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -89,8 +91,7 @@ const Myprofile = () => {
   };
 
   return (
-    <>
-      <Card style={{ width: '58rem', marginBottom: '20px' }}>
+    <><div style={{display:"flex",justifyContent:"center",alignItems:"center", height: "70vh"}}><div> <Card style={{ width: '58rem' }}>
         <Card.Body>
           <Card.Title>EMAIL: {initialData.email}</Card.Title>
           <Card.Title>FIRST NAME: {initialData.ftname}</Card.Title>
@@ -98,13 +99,17 @@ const Myprofile = () => {
           <Card.Title>PHONE: {initialData.phone}</Card.Title>
           <Card.Title>QUALIFICATION: {initialData.qualification}</Card.Title>
           <Card.Title>EXPERIENCE: {initialData.experience}</Card.Title>
+    
+
+          
           <div className="d-flex justify-content-end">
             <Button variant="primary" className="mr-2" onClick={handleEditClick}>
               Update Profile
             </Button>
           </div>
         </Card.Body>
-      </Card>
+      </Card></div></div>
+     
 
       {/* Modal for editing */}
       <Modal show={showModal} onHide={() => setShowModal(false)}>
@@ -120,7 +125,7 @@ const Myprofile = () => {
             </Form.Group>
             <Form.Group controlId="formTitle">
               <Form.Label>First Name</Form.Label>
-              <Form.Control type="text" name="fname" value={formData.ftname || ''} onChange={handleInputChange} />
+              <Form.Control type="text" name="ftname" value={formData.ftname || ''} onChange={handleInputChange} />
             </Form.Group>
             <Form.Group controlId="formLocation">
               <Form.Label>Last Name</Form.Label>

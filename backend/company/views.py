@@ -1,12 +1,16 @@
 from django.shortcuts import render
 
 from candidate.models import Canidate_register 
-from.models import Company_register,JobOpening
+from.models import Company_register, JobApplications,JobOpening
 from rest_framework.response import Response
 from rest_framework.views import APIView 
 from .serializers import Company_serializer, Job_serializer, myprofile_serializer
 from django.contrib.auth import authenticate
 from rest_framework import status
+
+from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
+
 
 
 
@@ -118,23 +122,54 @@ class Jobopen(APIView):
         else:
             return Response({'result': 'Job ID not provided'}, status=400)
         
-class jobapplicationApi(APIView):
-    def post(self,request):
-        serializer = myprofile_serializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()  
-            return Response({'result':'job applied successfully'})
+# class jobapplicationApi(APIView):
+#     def post(self,request):
+#         serializer = myprofile_serializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()  
+#             return Response({'result':'job applied successfully'},status=200)
         
     
-        return Response ({'result':'job application failed'})
-    def get(self, request):
-        # Retrieve all JobOpening objects from the database
-        job_application = Canidate_register.objects.all()
-        # Serialize the queryset of JobOpening objects
-        serializer = myprofile_serializer(job_application, many=True)
-        # Return the serialized data as a response
-        return Response(serializer.data)
+#         return Response ({'result':'job application failed'},status=400)
+#     def get(self, request):
+#         # Retrieve all JobOpening objects from the database
+#         job_application = Canidate_register.objects.all()
+#         # Serialize the queryset of JobOpening objects
+#         serializer = myprofile_serializer(job_application, many=True)
+#         # Return the serialized data as a response
+#         return Response(serializer.data)
     
+# # Example of Django view to handle fetching applied candidates
+
+
+class AppliedCandidatesView(APIView):
+    def get(self, request, job_id):
+        job = get_object_or_404(JobOpening, id=job_id)
+        applications = JobApplications.objects.filter(job_id=job).select_related('canidate_id')
+        data = [{
+            'name': app.canidate_id.ftname,
+            'email': app.canidate_id.email,
+            'phone': app.canidate_id.phone,
+            'qualification': app.canidate_id.qualification,
+        } for app in applications]
+        return Response(data, status=status.HTTP_200_OK)
+    
+class jobapplicationApi(APIView):
+    def post(self, request):
+        job_id = request.data.get('job_id')
+        canidate_id = request.data.get('canidate_id')
+        company_id = request.data.get('company_id')
+
+        if not job_id or not canidate_id or not company_id:
+            return Response({"error": "Missing job_id, candidate_id, or company_id"}, status=status.HTTP_400_BAD_REQUEST)
+
+        job = get_object_or_404(JobOpening, id=job_id)
+        canidate = get_object_or_404(Canidate_register, id=canidate_id)
+        company = get_object_or_404(Company_register, id=company_id)
+
+        application = JobApplications.objects.create(job_id=job, canidate_id=canidate, company_id=company)
+        return Response({"message": "Application submitted successfully"}, status=status.HTTP_201_CREATED)
+
 
 
 

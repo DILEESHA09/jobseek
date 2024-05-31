@@ -7,12 +7,12 @@ import REGISTER from './page/REGISTER'
 import Login from './page/Login'
 import { Route, BrowserRouter as Router, Routes} from 'react-router-dom';
 import Dashboard from './page/Dashboard'
-import Canidate_register from './page/canidate_register'
+import Candidate_register from './page/candidate_register'
 import Profile from './page/profile'
-import Canidate_login from './page/canidate_login'
+import Candidate_login from './page/candidate_login'
 import Navbar from './page/Navbar';
-import CandidateApplication from './page/canidateapplication'
-import ViewJobApplications from './page/viewapplications'
+
+import  AppliedCandidates from './page/viewapplications'
 import { Link, useNavigate } from 'react-router-dom';
 function App() {
   const [count, setCount] = useState(0)
@@ -28,11 +28,11 @@ function App() {
      <Route path="/login" element={<Login/>} />
      <Route path='/dashboard' element={<Dashboard/>}/>
      <Route path='/applyjob' element ={< Applyjob />} />
-     <Route path='/canidate_register' element ={< Canidate_register />} />
-     <Route path='/canidate_login' element ={< Canidate_login />} />
-     <Route path='/candidateApplication' element ={< CandidateApplication />} />
-     <Route path='/viewJobApplications' element ={< ViewJobApplications />} />
+     <Route path='/candidate_register' element ={< Candidate_register />} />
+     <Route path='/candidate_login' element ={< Candidate_login />} />
      <Route path='/profile' element ={< Profile  />} />
+     <Route path='/appliedCandidates/:jobId' element={<AppliedCandidates/>} />
+    
      </Routes>
      </Router>
     </>

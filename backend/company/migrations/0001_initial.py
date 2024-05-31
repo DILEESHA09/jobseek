@@ -38,7 +38,7 @@ class Migration(migrations.Migration):
             name='JobApplications',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('canidate_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='candidate.canidate_register')),
+                ('candidate_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='candidate.candidate_register')),
                 ('company_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='company.company_register')),
                 ('job_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='company.jobopening')),
             ],

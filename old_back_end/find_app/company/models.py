@@ -1,6 +1,6 @@
 from django.db import models
 
-from customer.models import Canidate_register
+from customer.models import Candidate_register
 
 # Create your models here.
 class Company_register(models.Model):
@@ -22,7 +22,7 @@ class JobOpening(models.Model):
 
 class JobApplications(models.Model):
     job_id = models.ForeignKey(JobOpening, on_delete = models.CASCADE)
-    canidate_id = models.ForeignKey(Canidate_register, on_delete = models.CASCADE)
+    candidate_id = models.ForeignKey(Candidate_register, on_delete = models.CASCADE)
     company_id =  models.ForeignKey(Company_register, on_delete = models.CASCADE)
      # Define the path to upload CVs
 

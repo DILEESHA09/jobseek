@@ -16,6 +16,8 @@ class JobOpening(models.Model):
     education_qualification = models.CharField(max_length=100)
     location = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
+    apply_status = models.CharField(max_length = 20, default = 'pending')
+
 
     def __str__(self):
         return self.title

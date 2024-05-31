@@ -3,6 +3,7 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 
@@ -11,34 +12,40 @@ import axios from 'axios';
 
 function NavScrollExample() {
 
-
-
+  const navigate = useNavigate()
+  const isLoggedIn = localStorage.getItem('session_id'); // Check if user is logged in
+  const login =()=>{
+    navigate('/candidate_login')
+  }
+  const data = {
+    sessionKey: localStorage.getItem('session_id')
+  }
   const handleLogout = async () => {
     try {
-      // Make an HTTP POST request to the logout endpoint
-      const response = await axios.post('http://127.0.0.1:8000/candidate/logout/', {}, {
+      const response = await fetch('http://127.0.0.1:8000/candidate/logout/', {
+        method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          // Add any additional headers if required
         },
-        withCredentials: true // Ensure cookies are sent with the request if needed
+        body: JSON.stringify(data) // Add the request body if required
       });
 
-      // Check if the request was successful
+
       if (response.status === 200) {
-        console.log(response);
-        // Remove session ID from local storage
-        localStorage.removeItem('session_id');
-        // Redirect the user to the login page
-        navigate('/canidate_login');
+        localStorage.removeItem('session_id')
+        localStorage.removeItem('candidate_id')
+
+        console.log('Logout successful');
+        navigate('/candidate_login')
       } else {
-        console.error('Logout failed:', response.data.error);
-        // Display error message to the user
+        console.log('Logout failed');
       }
     } catch (error) {
-      console.error('An error occurred while logging out:', error.message);
-      // Display error message to the user
+      console.error('Error:', error);
     }
   };
+
 
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
@@ -52,9 +59,9 @@ function NavScrollExample() {
             navbarScroll
           >
             <Nav.Link href="/register">COMPANY REGISTER</Nav.Link>
-            <Nav.Link href="canidate_register">CANIDATE</Nav.Link>
-            
-          
+            <Nav.Link href="candidate_register">CANDIDATE</Nav.Link>
+            <Nav.Link href='/profile'>MYPROFILE</Nav.Link>
+
           </Nav>
           <Form className="d-flex">
             <Form.Control
@@ -64,7 +71,11 @@ function NavScrollExample() {
               aria-label="Search"
             />
             <Button variant="outline-success">Search</Button>
-            <Button variant="outline-success" onClick={handleLogout}>Logout</Button>
+            {isLoggedIn ? ( // Check if user is logged in
+              <Button variant="outline-success" onClick={handleLogout}>Logout</Button>
+            ) : (
+              <Button variant="outline-success"  onClick ={login} >Login</Button>
+            )}
           </Form>
         </Navbar.Collapse>
       </Container>
