@@ -52,7 +52,8 @@ class Candidate_profile(APIView):
         user_profile=Canidate_register.objects.get(pk=id)
         
         if user_profile:
-            serializer = Canidate_serializer(user_profile)
+            serializer = Canidate_serializer(user_profile,context={'request': request})
+            print(serializer.data)
             return Response(serializer.data)
         else:
             return Response({'result': 'candidate does not exist'}, status=404)
@@ -88,6 +89,7 @@ class CandidateLogin(APIView):
 class CandidateLogout(APIView):
     def post(self, request):
         session_key = request.data.get('sessionKey')
+        print(request.data.get)
 
         if not session_key:
             return Response({'error': 'Session key not provided'}, status=status.HTTP_400_BAD_REQUEST)

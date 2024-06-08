@@ -31,7 +31,7 @@ function AppliedCandidates() {
             <p>Email: {candidate.email}</p>
             <p>Phone: {candidate.phone}</p>
             <p>Qualification: {candidate.qualification}</p>
-            <p>CV: {candidate.cv}</p>
+            <p>CV:  <a href={`${candidate.cv_url}`}>Click here to view CV</a></p>
           </div>
         ))
       ) : (

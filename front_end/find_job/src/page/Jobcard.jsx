@@ -11,6 +11,7 @@ const Jobcard = ({ job , fetch}) => {
     navigate(`/appliedCandidates/${jobId}`);
   };
   const [formData, setFormData] = useState({
+    
     title: job?.title || '',
     location: job?.location || '',
     description: job?.description || ''

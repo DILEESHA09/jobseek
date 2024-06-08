@@ -46,34 +46,42 @@ class CompanyLoginView(APIView):
                         print(session_id)
                         print(request.session['company_email'])
 
-                    return Response({'message': 'User logged in successfully','session_id':session_id}, status=status.HTTP_200_OK)
+                    return Response({'message': 'User logged in successfully','session_id':session_id,'company_id':user[0].id}, status=status.HTTP_200_OK)
                 else:
                     return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
             except Company_register.DoesNotExist:
                 return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
-        
-        
+   
+class CompanyLogout(APIView):
+    def post(self, request):
+        print(request)
+        session_key = request.data.get('sessionKey')
+
+        if not session_key:
+            return Response({'error': 'Session key not provided'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # if session_key == request.session.session_key:
+        #     # Remove specific session data
+        #     request.session.pop('candidate_id', None)
+        #     request.session.pop('candidate_email', None)
+
+        request.session.flush()    
+        return Response({'message': 'Logged out successfully'}, status=status.HTTP_200_OK)
+        # else:
+        #     return Response({'error': 'Invalid session key'}, status=status.HTTP_400_BAD_REQUEST)
+       
+class JobOpeningCompanyView(APIView):
+    def get(self, request):
+        company_id = request.query_params.get('company_id')
+        if company_id:
+            job_openings = JobOpening.objects.filter(company=company_id)
+       
+        serializer = Job_serializer(job_openings, many=True)
+        return Response(serializer.data)       
 
 
-
-# class Jobopen(APIView):
-#     def post(self,request):
-#         serializer = Job_serializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()  
-#             return Response({'result':'Job added successfully'})
-#         return Response ({'result':'Job adding failed'})
-#     def get(self, request):
-#         # Retrieve all JobOpening objects from the database
-#         job_openings = JobOpening.objects.all()
-#         # Serialize the queryset of JobOpening objects
-#         serializer = Job_serializer(job_openings, many=True)
-#         # Return the serialized data as a response
-#         return Response(serializer.data)
-#     from rest_framework.response import Response
 
 
 class Jobopen(APIView):
@@ -122,24 +130,7 @@ class Jobopen(APIView):
         else:
             return Response({'result': 'Job ID not provided'}, status=400)
         
-# class jobapplicationApi(APIView):
-#     def post(self,request):
-#         serializer = myprofile_serializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()  
-#             return Response({'result':'job applied successfully'},status=200)
-        
-    
-#         return Response ({'result':'job application failed'},status=400)
-#     def get(self, request):
-#         # Retrieve all JobOpening objects from the database
-#         job_application = Canidate_register.objects.all()
-#         # Serialize the queryset of JobOpening objects
-#         serializer = myprofile_serializer(job_application, many=True)
-#         # Return the serialized data as a response
-#         return Response(serializer.data)
-    
-# # Example of Django view to handle fetching applied candidates
+
 
 
 class AppliedCandidatesView(APIView):
@@ -151,14 +142,17 @@ class AppliedCandidatesView(APIView):
             'email': app.canidate_id.email,
             'phone': app.canidate_id.phone,
             'qualification': app.canidate_id.qualification,
+            'cv_url': request.build_absolute_uri(app.canidate_id.cv.url) if app.canidate_id.cv else None,
         } for app in applications]
         return Response(data, status=status.HTTP_200_OK)
     
 class jobapplicationApi(APIView):
     def post(self, request):
+        print(request.data)
         job_id = request.data.get('job_id')
-        canidate_id = request.data.get('canidate_id')
+        canidate_id =int(request.data.get('canidate_id'))
         company_id = request.data.get('company_id')
+        
 
         if not job_id or not canidate_id or not company_id:
             return Response({"error": "Missing job_id, candidate_id, or company_id"}, status=status.HTTP_400_BAD_REQUEST)
@@ -166,6 +160,10 @@ class jobapplicationApi(APIView):
         job = get_object_or_404(JobOpening, id=job_id)
         canidate = get_object_or_404(Canidate_register, id=canidate_id)
         company = get_object_or_404(Company_register, id=company_id)
+
+        existing_application = JobApplications.objects.filter(job_id=job,  canidate_id=canidate).first()
+        if existing_application:
+            return Response({"error": "You have already applied for this job"},status=200)
 
         application = JobApplications.objects.create(job_id=job, canidate_id=canidate, company_id=company)
         return Response({"message": "Application submitted successfully"}, status=status.HTTP_201_CREATED)

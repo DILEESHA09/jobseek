@@ -37,13 +37,16 @@ const Login = () => {
       // Check if the request was successful
       if (response.status === 200) {
         console.log(response);
-        if(response.session_id){
-          localStorage.setItem('session_id',session_id)
+
+        if(response.data.session_id){
+          localStorage.setItem('session_cmp_id',response.data.session_id)
+          localStorage.setItem('company_id',response.data.company_id)
           
+          window.location.href = '/dashboard'; // Redirect to the dashboard page
         }
       
         // Handle successful login (e.g., redirect the user)
-        window.location.href = '/dashboard'; // Redirect to the dashboard page
+       
       } else {
         // Handle errors (e.g., display error message to the user)
         console.error('Login failed:', response.data.error);

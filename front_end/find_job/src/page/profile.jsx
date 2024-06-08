@@ -13,6 +13,7 @@ const Myprofile = () => {
     lname: '',
     qualification: '',
     cv: '',
+    cv_url:"",    
     experience: 0,
     phone: '',
   });
@@ -29,6 +30,7 @@ const Myprofile = () => {
         lname: data.lname,
         qualification: data.qualification,
         cv: '', // Initialize as null since file can't be set directly
+     
         experience: data.experience,
         phone: data.phone,
       });
@@ -72,7 +74,7 @@ const Myprofile = () => {
       if (formData.cv) {
         formDataToSend.append('cv', formData.cv);
       }
-      formDataToSend.append('experience',5);
+      formDataToSend.append('experience',formData.experience);
       formDataToSend.append('phone', formData.phone);
 
       const response = await axios.patch(`http://127.0.0.1:8000/candidate/register/?id=${initialData.id}`, formDataToSend, {
@@ -99,6 +101,8 @@ const Myprofile = () => {
           <Card.Title>PHONE: {initialData.phone}</Card.Title>
           <Card.Title>QUALIFICATION: {initialData.qualification}</Card.Title>
           <Card.Title>EXPERIENCE: {initialData.experience}</Card.Title>
+          <Card.Title>cv: <a href={`${initialData.cv_url}`}>click here</a></Card.Title>
+
     
 
           

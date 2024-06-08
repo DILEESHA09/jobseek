@@ -15,6 +15,8 @@ const Openjob = ({fetch}) => {
   const [isAlert, setIsAlert] = useState(false);
   const [message, setMessage] = useState("");
 
+  const company = localStorage.getItem('company_id')
+
   const toggleVisibility = () => {
     setIsVisible(prevState => !prevState);
   };
@@ -43,12 +45,15 @@ const Openjob = ({fetch}) => {
     event.preventDefault();
 
     try {
+      var cmp =  localStorage.getItem('company_id');
       const response = await axios.post('http://127.0.0.1:8000/company/open_job/', {
+        
+
         title: title,
         description: description,
         requirement: requirement,
         education_qualification: education_qualification,
-        company :company.id,
+        company :cmp,
         location: location 
       });
   
@@ -94,6 +99,7 @@ const Openjob = ({fetch}) => {
                 <Form.Label>Title</Form.Label>
                 <Form.Control type="text" placeholder="Enter job title" value={title} onChange={handleTitleChange} />
               </Form.Group>
+             
 
               <Form.Group controlId="formDescription">
                 <Form.Label>Description</Form.Label>

@@ -60,6 +60,7 @@ function Candidate_register() {
           type="password"
           className="form-control"
           id="password"
+          
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
