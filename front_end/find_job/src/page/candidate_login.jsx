@@ -39,7 +39,7 @@ const Candidate_login = () => {
         if(response.data.session_id){
           localStorage.setItem('session_id',response.data.session_id)
           localStorage.setItem('candidate_id',response.data.candidate_id)
-          window.location.href = '/applyjob'; // Redirect to the dashboard page
+          window.location.href = '/'; // Redirect to the dashboard page
         }
         // Handle successful login (e.g., redirect the user)
         

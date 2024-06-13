@@ -79,13 +79,13 @@ function NavScrollExample() {
   };
 
   const handleSearch = () => {
-    navigate(`/applyjob?search=${searchQuery}`);
+    navigate(`/?search=${searchQuery}`);
   };
 
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container fluid>
-        <Navbar.Brand href='/applyjob'>FIND YOUR DREAM JOBS HERE</Navbar.Brand>
+        <Navbar.Brand href='/'>FIND YOUR DREAM JOBS HERE</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '100px' }} navbarScroll>
@@ -115,16 +115,19 @@ function NavScrollExample() {
         </Navbar.Collapse>
         <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '100px' }} navbarScroll>
 
-{isCompanyLoggedIn ? (
-  <Button variant="outline-success" className="mx-2" onClick={handleCompanyLogout}>COMPANY LOGOUT</Button>
-) : (
-  <Button variant="outline-success" className="mx-2" onClick={logincmp}>COMPANY LOGIN</Button>
-)}
-{isLoggedIn ? (
+        {isLoggedIn ? (
   <Button variant="outline-success" className="mx-2" onClick={handleLogout}>CANDIDATE LOGOUT</Button>
 ) : (
-  <Button variant="outline-success" className="mx-2" onClick={login}>CANDIDATE LOGIN</Button>
+  isCompanyLoggedIn ? (
+    <Button variant="outline-success" className="mx-2" onClick={handleCompanyLogout}>COMPANY LOGOUT</Button>
+  ) : (
+    <>
+      <Button variant="outline-success" className="mx-2" onClick={logincmp}>COMPANY LOGIN</Button>
+      <Button variant="outline-success" className="mx-2" onClick={login}>CANDIDATE LOGIN</Button>
+    </>
+  )
 )}
+
 
 </Nav>
       </Container>

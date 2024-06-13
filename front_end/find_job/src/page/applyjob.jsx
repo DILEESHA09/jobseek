@@ -92,7 +92,7 @@ const Applyjob = () => {
                 {job.title}
               </Typography>
               <Typography color="textSecondary">
-                Company: {job.company}
+                Company Id: {job.company}
               </Typography>
               <Typography color="textSecondary">
                 Location: {job.location}
